@@ -1135,16 +1135,38 @@ function faCard(){const F=S.fa;
 if(S.ui.start=='last'&&S.ui.last&&S.ui.last!='set'&&TABS.some(t=>t[0]==S.ui.last))tab=S.ui.last;
 if(!faBoot()){secInit();render();faPull(1)}
 
-</script></body><script>
+</script></body>
+<script>
 (function() {
   const DB_URL = "https://hsap-39e8b-default-rtdb.firebaseio.com";
   try {
     let pf = JSON.parse(localStorage.getItem('pf') || '{}');
     if (!pf.fUrl) { pf.fUrl = DB_URL; localStorage.setItem('pf', JSON.stringify(pf)); }
-    if (location.hash === '#father') {
+    
+    if (location.hash === '#father' || pf.onlyFather) {
       pf.isFather = true;
+      pf.onlyFather = true;
       pf.fUrl = DB_URL;
       localStorage.setItem('pf', JSON.stringify(pf));
+      
+      // إخفاء شريط التبويبات والأقسام الأخرى وفتح قسم الوالد فقط
+      const style = document.createElement('style');
+      style.innerHTML = `
+        nav, #nav, .nav, [class*="nav"] { display: none !important; }
+      `;
+      document.head.appendChild(style);
+      
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const btns = document.querySelectorAll('button, div, span, a');
+          for (let b of btns) {
+            if (b.textContent && b.textContent.trim().includes('الوالد') && b.children.length === 0) {
+              b.click();
+              break;
+            }
+          }
+        }, 300);
+      });
     }
   } catch(e) {}
 })();
