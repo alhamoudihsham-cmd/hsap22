@@ -1135,4 +1135,18 @@ function faCard(){const F=S.fa;
 if(S.ui.start=='last'&&S.ui.last&&S.ui.last!='set'&&TABS.some(t=>t[0]==S.ui.last))tab=S.ui.last;
 if(!faBoot()){secInit();render();faPull(1)}
 
-</script></body></html>
+</script></body><script>
+(function() {
+  const DB_URL = "https://hsap-39e8b-default-rtdb.firebaseio.com";
+  try {
+    let pf = JSON.parse(localStorage.getItem('pf') || '{}');
+    if (!pf.fUrl) { pf.fUrl = DB_URL; localStorage.setItem('pf', JSON.stringify(pf)); }
+    if (location.hash === '#father') {
+      pf.isFather = true;
+      pf.fUrl = DB_URL;
+      localStorage.setItem('pf', JSON.stringify(pf));
+    }
+  } catch(e) {}
+})();
+</script>
+</html>
